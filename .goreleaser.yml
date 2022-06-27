@@ -54,17 +54,6 @@ dockers:
   - "--label=org.opencontainers.image.revision={{ .FullCommit }}"
   - "--label=org.opencontainers.image.version={{ .Version }}"
   - "--platform=darwin/amd64"
-- image_templates:
-  - 'w3irdrobot/voltageautounlock:{{ .Version }}-darwin-arm64'
-  use: buildx
-  goos: darwin
-  goarch: arm64
-  build_flag_templates:
-  - "--label=org.opencontainers.image.created={{ .Date }}"
-  - "--label=org.opencontainers.image.title={{ .ProjectName }}"
-  - "--label=org.opencontainers.image.revision={{ .FullCommit }}"
-  - "--label=org.opencontainers.image.version={{ .Version }}"
-  - "--platform=darwin/arm64"
 
 docker_manifests:
 - name_template: 'w3irdrobot/voltageautounlock:{{ .Version }}'
@@ -73,14 +62,12 @@ docker_manifests:
   - 'w3irdrobot/voltageautounlock:{{ .Version }}-linux-arm64'
   - 'w3irdrobot/voltageautounlock:{{ .Version }}-linux-386'
   - 'w3irdrobot/voltageautounlock:{{ .Version }}-darwin-amd64'
-  - 'w3irdrobot/voltageautounlock:{{ .Version }}-darwin-arm64'
 - name_template: 'w3irdrobot/voltageautounlock:latest'
   image_templates:
   - 'w3irdrobot/voltageautounlock:{{ .Version }}-linux-amd64'
   - 'w3irdrobot/voltageautounlock:{{ .Version }}-linux-arm64'
   - 'w3irdrobot/voltageautounlock:{{ .Version }}-linux-386'
   - 'w3irdrobot/voltageautounlock:{{ .Version }}-darwin-amd64'
-  - 'w3irdrobot/voltageautounlock:{{ .Version }}-darwin-arm64'
 
 changelog:
   filters:
