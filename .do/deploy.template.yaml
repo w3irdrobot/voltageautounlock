@@ -3,9 +3,9 @@ spec:
 
   services:
   - name: service
-    git:
+    github:
       branch: master
-      repo_clone_url: https://github.com/w3irdrobot/voltageautounlock.git
+      repo: w3irdrobot/voltageautounlock
     envs:
     - key: ADDRESS
       scope: RUN_TIME
