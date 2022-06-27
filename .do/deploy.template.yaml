@@ -10,7 +10,7 @@ spec:
     - key: ADDRESS
       scope: RUN_TIME
       value: ':8080'
-    - key: VOLTAGE_NODE_APi
+    - key: VOLTAGE_NODE_API
       scope: RUN_TIME
     - key: VOLTAGE_WEBHOOK_SECRET
       scope: RUN_TIME
