@@ -1,0 +1,9 @@
+name: Testing and Linting
+
+on:
+  workflow_call: {}
+  pull_request: {}
+
+jobs:
+  golang_lint:
+    uses: ./.github/workflows/golang_lint.yaml

@@ -1,0 +1,9 @@
+name: Build Staging
+
+on:
+  push:
+    branches: [ master, main ]
+
+jobs:
+  golang_lint:
+    uses: ./.github/workflows/golang_lint.yaml

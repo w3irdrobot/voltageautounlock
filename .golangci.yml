@@ -1,0 +1,13 @@
+linters:
+  enable-all: true
+  disable:
+  - containedctx
+  - exhaustruct
+  - exhaustivestruct
+  - tagliatelle
+
+linters-settings:
+  varnamelen:
+    ignore-decls:
+    - w http.ResponseWriter
+    - r *http.Request

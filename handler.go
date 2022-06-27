@@ -35,23 +35,25 @@ type lndUnlock struct {
 type unlockHandler struct {
 	ctx            context.Context
 	secret         string
-	nodeApi        string
+	nodeAPI        string
 	walletPassword string
 }
 
-func newUnlockHandler(ctx context.Context, secret, nodeApi, walletPassword string) *unlockHandler {
-	return &unlockHandler{ctx, secret, nodeApi, walletPassword}
+func newUnlockHandler(ctx context.Context, secret, nodeAPI, walletPassword string) *unlockHandler {
+	return &unlockHandler{ctx, secret, nodeAPI, walletPassword}
 }
 
 func (h *unlockHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		w.WriteHeader(http.StatusMethodNotAllowed)
+
 		return
 	}
 
 	if value := r.Header.Get(SecretHeader); value != h.secret {
 		log.Printf("secret '%s' from header didn't match expected secret\n", value)
 		w.WriteHeader(http.StatusForbidden)
+
 		return
 	}
 
@@ -59,6 +61,7 @@ func (h *unlockHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if err := json.NewDecoder(r.Body).Decode(&event); err != nil {
 		log.Println("error reading the request body")
 		w.WriteHeader(http.StatusBadRequest)
+
 		return
 	}
 
@@ -66,21 +69,24 @@ func (h *unlockHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *unlockHandler) handleEvent(w http.ResponseWriter, event unlockEvent) {
-	if event.API != h.nodeApi {
+	if event.API != h.nodeAPI {
 		log.Printf("api '%s' does not match expected api\n", event.API)
 		w.WriteHeader(http.StatusBadRequest)
+
 		return
 	}
 
 	if event.Kind != Status {
 		log.Printf("event type '%s' does not match expected type\n", event.Kind)
 		w.WriteHeader(http.StatusBadRequest)
+
 		return
 	}
 
 	if event.Details.Status != WaitingUnlock {
 		log.Printf("event details status '%s' does not match expected status\n", event.Details.Status)
 		w.WriteHeader(http.StatusBadRequest)
+
 		return
 	}
 
@@ -91,18 +97,21 @@ func (h *unlockHandler) handleEvent(w http.ResponseWriter, event unlockEvent) {
 	if err != nil {
 		log.Printf("error marshalling the request to lnd")
 		w.WriteHeader(http.StatusInternalServerError)
+
 		return
 	}
 
 	endpoint := url.URL{
 		Scheme: "https",
-		Host:   h.nodeApi + ":8080",
+		Host:   h.nodeAPI + ":8080",
 		Path:   LNDUnlockPath,
 	}
+
 	res, err := http.Post(endpoint.String(), "application/json", bytes.NewBuffer(body))
 	if err != nil {
 		log.Printf("error sending the request to lnd")
 		w.WriteHeader(http.StatusInternalServerError)
+
 		return
 	}
 
@@ -110,6 +119,7 @@ func (h *unlockHandler) handleEvent(w http.ResponseWriter, event unlockEvent) {
 		body, _ := io.ReadAll(res.Body)
 		log.Printf("error returned from unlocking LND: %s", body)
 		w.WriteHeader(http.StatusBadRequest)
+
 		return
 	}
 
