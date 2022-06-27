@@ -1,0 +1,21 @@
+builds:
+- env: [ CGO_ENABLED=0 ]
+  binary: server
+
+checksum:
+  name_template: 'checksums.txt'
+
+dockers:
+- image_templates:
+  - 'w3irdrobot/voltageautounlock:{{ .Tag }}'
+  use: buildx
+
+changelog:
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+      - '^ci:'
+      - '^Merge pull request'
+      - 'typo'
+      - 'version bump'
