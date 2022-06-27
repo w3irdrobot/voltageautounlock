@@ -1,3 +1,7 @@
+before:
+  hooks:
+  - go mod tidy
+
 builds:
 - env: [ CGO_ENABLED=0 ]
   binary: server
@@ -7,8 +11,39 @@ checksum:
 
 dockers:
 - image_templates:
-  - 'w3irdrobot/voltageautounlock:{{ .Tag }}'
+  - 'w3irdrobot/voltageautounlock:{{ .Version }}-linux-amd64'
   use: buildx
+  goos: linux
+  goarch: amd64
+- image_templates:
+  - 'w3irdrobot/voltageautounlock:{{ .Version }}-linux-arm64'
+  use: buildx
+  goos: linux
+  goarch: arm64
+- image_templates:
+  - 'w3irdrobot/voltageautounlock:{{ .Version }}-linux-386'
+  use: buildx
+  goos: linux
+  goarch: '386'
+- image_templates:
+  - 'w3irdrobot/voltageautounlock:{{ .Version }}-darwin-amd64'
+  use: buildx
+  goos: darwin
+  goarch: amd64
+- image_templates:
+  - 'w3irdrobot/voltageautounlock:{{ .Version }}-darwin-arm64'
+  use: buildx
+  goos: darwin
+  goarch: arm64
+
+docker_manifests:
+- name_template: 'w3irdrobot/voltageautounlock:{{ .Version }}'
+  image_templates:
+  - 'w3irdrobot/voltageautounlock:{{ .Version }}-linux-amd64'
+  - 'w3irdrobot/voltageautounlock:{{ .Version }}-linux-arm64'
+  - 'w3irdrobot/voltageautounlock:{{ .Version }}-linux-386'
+  - 'w3irdrobot/voltageautounlock:{{ .Version }}-darwin-amd64'
+  - 'w3irdrobot/voltageautounlock:{{ .Version }}-darwin-arm64'
 
 changelog:
   filters:
