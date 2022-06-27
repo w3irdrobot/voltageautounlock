@@ -15,26 +15,61 @@ dockers:
   use: buildx
   goos: linux
   goarch: amd64
+  build_flag_templates:
+  - "--pull"
+  - "--label=org.opencontainers.image.created={{.Date}}"
+  - "--label=org.opencontainers.image.title={{.ProjectName}}"
+  - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+  - "--label=org.opencontainers.image.version={{.Version}}"
+  - "--platform=linux/amd64"
 - image_templates:
   - 'w3irdrobot/voltageautounlock:{{ .Version }}-linux-arm64'
   use: buildx
   goos: linux
   goarch: arm64
+  build_flag_templates:
+  - "--pull"
+  - "--label=org.opencontainers.image.created={{.Date}}"
+  - "--label=org.opencontainers.image.title={{.ProjectName}}"
+  - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+  - "--label=org.opencontainers.image.version={{.Version}}"
+  - "--platform=linux/arm64"
 - image_templates:
   - 'w3irdrobot/voltageautounlock:{{ .Version }}-linux-386'
   use: buildx
   goos: linux
   goarch: '386'
+  build_flag_templates:
+  - "--pull"
+  - "--label=org.opencontainers.image.created={{.Date}}"
+  - "--label=org.opencontainers.image.title={{.ProjectName}}"
+  - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+  - "--label=org.opencontainers.image.version={{.Version}}"
+  - "--platform=linux/386"
 - image_templates:
   - 'w3irdrobot/voltageautounlock:{{ .Version }}-darwin-amd64'
   use: buildx
   goos: darwin
   goarch: amd64
+  build_flag_templates:
+  - "--pull"
+  - "--label=org.opencontainers.image.created={{.Date}}"
+  - "--label=org.opencontainers.image.title={{.ProjectName}}"
+  - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+  - "--label=org.opencontainers.image.version={{.Version}}"
+  - "--platform=darwin/amd64"
 - image_templates:
   - 'w3irdrobot/voltageautounlock:{{ .Version }}-darwin-arm64'
   use: buildx
   goos: darwin
   goarch: arm64
+  build_flag_templates:
+  - "--pull"
+  - "--label=org.opencontainers.image.created={{.Date}}"
+  - "--label=org.opencontainers.image.title={{.ProjectName}}"
+  - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+  - "--label=org.opencontainers.image.version={{.Version}}"
+  - "--platform=darwin/arm64"
 
 docker_manifests:
 - name_template: 'w3irdrobot/voltageautounlock:{{ .Version }}'
@@ -48,9 +83,9 @@ docker_manifests:
 changelog:
   filters:
     exclude:
-      - '^docs:'
-      - '^test:'
-      - '^ci:'
-      - '^Merge pull request'
-      - 'typo'
-      - 'version bump'
+    - '^docs:'
+    - '^test:'
+    - '^ci:'
+    - '^Merge pull request'
+    - 'typo'
+    - 'version bump'
