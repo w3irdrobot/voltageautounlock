@@ -1,0 +1,31 @@
+{
+    "name": "Voltage AutoUnlock",
+    "description": "Service to receive the webhook to then unlock a Voltage LND node",
+    "repository": "https://github.com/w3irdrobot/voltageautounlock",
+    "keywords": [
+        "golang",
+        "bitcoin",
+        "lightning",
+        "voltage"
+    ],
+    "buildpacks": [
+        {
+            "url": "heroku/go"
+        }
+    ],
+    "env": {
+        "ADDRESS": {
+            "description": "The host and port to run the service on",
+            "value": ":8080"
+        },
+        "VOLTAGE_NODE_API": {
+            "description": "The URL of the node's API that will be attempting to be unlocked with this service"
+        },
+        "VOLTAGE_WEBHOOK_SECRET": {
+            "description": "Secret used to validate the request"
+        },
+        "VOLTAGE_WALLET_PASSWORD": {
+            "description": "The wallet password for the node to unlock"
+        }
+    }
+}
