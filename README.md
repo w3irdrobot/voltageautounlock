@@ -9,8 +9,23 @@ To facilitate an easy setup for [auto-unlocking on Voltage](https://docs.voltage
 
 There are a few provided deployment methods to make setting up easy. Each method requires some values to be supplied to the service so it can run correctly. These values and their locations in the Voltage database are discussed [in the Voltage documentation](https://docs.voltage.cloud/lightning-nodes/webhooks#example-automatic-unlock).
 
+> Note: After all deployments, ensure to update the Voltage dashboard with the location of the webhook and `/unlock` appended to it.
+
+- [Fly.io](#flyio)
 - [Docker](#docker)
 - [Source](#source)
+
+### Fly.io
+
+Deploying to [fly.io](https://fly.io/) can be easily done using the [`flyctl`](https://fly.io/docs/flyctl/installing/) CLI.
+
+```shell
+flyctl secrets set \
+    VOLTAGE_NODE_API=<insert Node API URL> \
+    VOLTAGE_WEBHOOK_SECRET=<insert webhook secret> \
+    VOLTAGE_WALLET_PASSWORD=<insert wallet password>
+flyctl launch
+```
 
 ### Docker
 
