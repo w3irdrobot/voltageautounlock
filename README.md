@@ -20,11 +20,22 @@ There are a few provided deployment methods to make setting up easy. Each method
 Deploying to [fly.io](https://fly.io/) can be easily done using the [`flyctl`](https://fly.io/docs/flyctl/installing/) CLI.
 
 ```shell
+# view regions here: https://fly.io/docs/reference/regions/
+flyctl launch \
+    --generate-name \
+    --image w3irdrobot/voltageautounlock:1.0.0 \
+    --region ord \
+    --no-deploy
+
 flyctl secrets set \
     VOLTAGE_NODE_API=<insert Node API URL> \
     VOLTAGE_WEBHOOK_SECRET=<insert webhook secret> \
     VOLTAGE_WALLET_PASSWORD=<insert wallet password>
-flyctl launch
+
+flyctl deploy
+
+# input this hostname into voltage
+echo "https://$(flyctl info --host)"
 ```
 
 ### Docker
