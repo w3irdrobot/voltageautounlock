@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"context"
+	"encoding/base64"
 	"encoding/json"
 	"io"
 	"log"
@@ -91,7 +92,7 @@ func (h *unlockHandler) handleEvent(w http.ResponseWriter, event unlockEvent) {
 	}
 
 	body, err := json.Marshal(lndUnlock{
-		WalletPassword: h.walletPassword,
+		WalletPassword: base64.StdEncoding.EncodeToString([]byte(h.walletPassword)),
 		StatelessInit:  true,
 	})
 	if err != nil {
