@@ -23,7 +23,7 @@ Deploying to [fly.io](https://fly.io/) can be easily done using the [`flyctl`](h
 # view regions here: https://fly.io/docs/reference/regions/
 flyctl launch \
     --generate-name \
-    --image w3irdrobot/voltageautounlock:1.0.0 \
+    --image w3irdrobot/voltageautounlock:1.0.1 \
     --region ord \
     --no-deploy
 
@@ -56,7 +56,7 @@ docker run -it \
 To deploy from source, download [the latest binary](https://github.com/w3irdrobot/voltageautounlock/releases/latest) for the system this service will be run on. Set the necessary environment variables and run the binary.
 
 ```shell
-curl -Lo voltageunlock.tar.gz https://github.com/w3irdrobot/voltageautounlock/releases/download/1.0.0/voltageautounlock_1.0.0_linux_amd64.tar.gz
+curl -Lo voltageunlock.tar.gz https://github.com/w3irdrobot/voltageautounlock/releases/download/1.0.1/voltageautounlock_1.0.1_linux_amd64.tar.gz
 tar -xzf voltageunlock.tar.gz
 export VOLTAGE_NODE_API=<insert Node API URL>
 export VOLTAGE_WEBHOOK_SECRET=<insert webhook secret>
