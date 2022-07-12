@@ -33,18 +33,18 @@ type lndUnlock struct {
 	StatelessInit  bool   `json:"stateless_init"`
 }
 
-type unlockHandler struct {
+type handler struct {
 	ctx            context.Context
 	secret         string
 	nodeAPI        string
 	walletPassword string
 }
 
-func newUnlockHandler(ctx context.Context, secret, nodeAPI, walletPassword string) *unlockHandler {
-	return &unlockHandler{ctx, secret, nodeAPI, walletPassword}
+func newHandler(ctx context.Context, secret, nodeAPI, walletPassword string) *handler {
+	return &handler{ctx, secret, nodeAPI, walletPassword}
 }
 
-func (h *unlockHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (h *handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 
@@ -69,7 +69,9 @@ func (h *unlockHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	h.handleEvent(w, event)
 }
 
-func (h *unlockHandler) handleEvent(w http.ResponseWriter, event unlockEvent) {
+func (h *handler) handleEvent(w http.ResponseWriter, event unlockEvent) {
+	log.Printf("received request for %s", event.Details.Status)
+
 	if event.API != h.nodeAPI {
 		log.Printf("api '%s' does not match expected api\n", event.API)
 		w.WriteHeader(http.StatusBadRequest)
@@ -96,7 +98,7 @@ func (h *unlockHandler) handleEvent(w http.ResponseWriter, event unlockEvent) {
 		StatelessInit:  true,
 	})
 	if err != nil {
-		log.Printf("error marshalling the request to lnd")
+		log.Printf("error marshalling the request to lnd: %s", err)
 		w.WriteHeader(http.StatusInternalServerError)
 
 		return
@@ -110,7 +112,7 @@ func (h *unlockHandler) handleEvent(w http.ResponseWriter, event unlockEvent) {
 
 	res, err := http.Post(endpoint.String(), "application/json", bytes.NewBuffer(body))
 	if err != nil {
-		log.Printf("error sending the request to lnd")
+		log.Printf("error sending the request to lnd: %s", err)
 		w.WriteHeader(http.StatusInternalServerError)
 
 		return

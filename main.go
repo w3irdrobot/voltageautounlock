@@ -25,7 +25,7 @@ func main() {
 	server := &http.Server{Addr: cfg.address, Handler: router}
 	appCtx, appCancel := context.WithCancel(context.Background())
 
-	router.Handle("/unlock", newUnlockHandler(appCtx, cfg.webhookSecret, cfg.nodeAPI, cfg.walletPassword))
+	router.Handle("/", newHandler(appCtx, cfg.webhookSecret, cfg.nodeAPI, cfg.walletPassword))
 
 	signals := make(chan os.Signal, 1)
 	signal.Notify(signals, syscall.SIGINT, syscall.SIGTERM)
@@ -33,8 +33,8 @@ func main() {
 	shutdownComplete := make(chan struct{}, 1)
 
 	go func() {
-		log.Println("shutting down the server")
 		<-signals
+		log.Println("shutting down the server")
 
 		ctx, cancel := context.WithTimeout(context.Background(), shutdownTimeout)
 		defer cancel()
