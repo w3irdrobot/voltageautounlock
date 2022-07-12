@@ -9,7 +9,7 @@ To facilitate an easy setup for [auto-unlocking on Voltage](https://docs.voltage
 
 There are a few provided deployment methods to make setting up easy. Each method requires some values to be supplied to the service so it can run correctly. These values and their locations in the Voltage database are discussed [in the Voltage documentation](https://docs.voltage.cloud/lightning-nodes/webhooks#example-automatic-unlock).
 
-> Note: After all deployments, ensure to update the Voltage dashboard with the location of the webhook and `/unlock` appended to it.
+> Note: After all deployments, ensure to update the Voltage dashboard with the location of the webhook.
 
 - [Fly.io](#flyio)
 - [Docker](#docker)
