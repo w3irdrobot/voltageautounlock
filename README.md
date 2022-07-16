@@ -12,6 +12,7 @@ There are a few provided deployment methods to make setting up easy. Each method
 > Note: After all deployments, ensure to update the Voltage dashboard with the location of the webhook.
 
 - [Fly.io](#flyio)
+- [Railway](#railway)
 - [Docker](#docker)
 - [Source](#source)
 
@@ -36,6 +37,25 @@ flyctl deploy
 
 # input this hostname into voltage
 echo "https://$(flyctl info --host)"
+```
+
+### Railway
+
+Deploying to [Railway](https://railway.app) can be easily done using the [`railway`](https://docs.railway.app/develop/cli#install) CLI.
+
+```shell
+# initialize the project
+railway init
+# deploy the service
+railway up
+```
+
+This will fail because the environment variables are missing. Go to [the Railway dashboard](https://railway.app/dashboard), navigate to the service, and add the below variables using the raw editor.
+
+```
+VOLTAGE_NODE_API=<insert Node API URL>
+VOLTAGE_WEBHOOK_SECRET=<insert webhook secret>
+VOLTAGE_WALLET_PASSWORD=<insert wallet password>
 ```
 
 ### Docker

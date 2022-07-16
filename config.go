@@ -7,6 +7,7 @@ import (
 
 const (
 	envAddress = "ADDRESS"
+	envPort    = "PORT"
 	envNodeAPI = "VOLTAGE_NODE_API"
 	//nolint:gosec
 	envWebhookSecret  = "VOLTAGE_WEBHOOK_SECRET"
@@ -48,7 +49,7 @@ func newConfig() (*config, error) {
 		return nil, missingVariableError{envWalletPassword}
 	}
 
-	address := envVarWithDefault(envAddress, ":8080")
+	address := getAddressFromEnv()
 
 	return &config{
 		address:        address,
@@ -64,4 +65,16 @@ func envVarWithDefault(name, fallback string) string {
 	}
 
 	return fallback
+}
+
+func getAddressFromEnv() string {
+	if address := os.Getenv(envAddress); address != "" {
+		return address
+	}
+
+	if port := os.Getenv(envPort); port != "" {
+		return ":" + port
+	}
+
+	return ":8080"
 }
