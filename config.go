@@ -59,14 +59,6 @@ func newConfig() (*config, error) {
 	}, nil
 }
 
-func envVarWithDefault(name, fallback string) string {
-	if value, found := os.LookupEnv(name); found {
-		return value
-	}
-
-	return fallback
-}
-
 func getAddressFromEnv() string {
 	if address := os.Getenv(envAddress); address != "" {
 		return address
