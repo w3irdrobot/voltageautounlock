@@ -10,7 +10,8 @@ checksum:
   name_template: 'checksums.txt'
 
 dockers:
-- image_templates:
+- dockerfile: build.Dockerfile
+  image_templates:
   - 'w3irdrobot/voltageautounlock:{{ .Version }}-linux-amd64'
   use: buildx
   goos: linux
@@ -21,7 +22,8 @@ dockers:
   - "--label=org.opencontainers.image.revision={{ .FullCommit }}"
   - "--label=org.opencontainers.image.version={{ .Version }}"
   - "--platform=linux/amd64"
-- image_templates:
+- dockerfile: build.Dockerfile
+  image_templates:
   - 'w3irdrobot/voltageautounlock:{{ .Version }}-linux-arm64'
   use: buildx
   goos: linux
@@ -32,7 +34,8 @@ dockers:
   - "--label=org.opencontainers.image.revision={{ .FullCommit }}"
   - "--label=org.opencontainers.image.version={{ .Version }}"
   - "--platform=linux/arm64"
-- image_templates:
+- dockerfile: build.Dockerfile
+  image_templates:
   - 'w3irdrobot/voltageautounlock:{{ .Version }}-linux-386'
   use: buildx
   goos: linux
