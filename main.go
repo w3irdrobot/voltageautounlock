@@ -12,7 +12,8 @@ import (
 )
 
 const (
-	shutdownTimeout = 5 * time.Second
+	shutdownTimeout   = 5 * time.Second
+	readHeaderTimeout = 20 * time.Second
 )
 
 func main() {
@@ -22,7 +23,11 @@ func main() {
 	}
 
 	router := http.NewServeMux()
-	server := &http.Server{Addr: cfg.address, Handler: router}
+	server := &http.Server{
+		Addr:              cfg.address,
+		Handler:           router,
+		ReadHeaderTimeout: readHeaderTimeout,
+	}
 	appCtx, appCancel := context.WithCancel(context.Background())
 
 	router.Handle("/", newHandler(appCtx, cfg.webhookSecret, cfg.nodeAPI, cfg.walletPassword))
