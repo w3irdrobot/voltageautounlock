@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/base64"
 	"encoding/json"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -66,29 +67,27 @@ func (h *handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	h.handleEvent(w, event)
+	h.handleEvent(r.Context(), w, event)
 }
 
-func (h *handler) handleEvent(w http.ResponseWriter, event unlockEvent) {
-	log.Printf("received request for %s", event.Details.Status)
-
+func (h *handler) handleEvent(ctx context.Context, w http.ResponseWriter, event unlockEvent) {
 	if event.API != h.nodeAPI {
-		log.Printf("api '%s' does not match expected api\n", event.API)
-		w.WriteHeader(http.StatusBadRequest)
+		http.Error(w, fmt.Sprintf("api '%s' does not match expected api", event.API), http.StatusBadRequest)
 
 		return
 	}
 
 	if event.Kind != Status {
-		log.Printf("event type '%s' does not match expected type\n", event.Kind)
-		w.WriteHeader(http.StatusBadRequest)
+		http.Error(w, fmt.Sprintf("event type '%s' does not match expected type", event.Kind), http.StatusBadRequest)
 
 		return
 	}
 
 	if event.Details.Status != WaitingUnlock {
-		log.Printf("event details status '%s' does not match expected status\n", event.Details.Status)
-		w.WriteHeader(http.StatusBadRequest)
+		http.Error(
+			w,
+			fmt.Sprintf("event details status '%s' does not match expected status", event.Details.Status),
+			http.StatusBadRequest)
 
 		return
 	}
@@ -98,30 +97,33 @@ func (h *handler) handleEvent(w http.ResponseWriter, event unlockEvent) {
 		StatelessInit:  true,
 	})
 	if err != nil {
-		log.Printf("error marshalling the request to lnd: %s", err)
-		w.WriteHeader(http.StatusInternalServerError)
+		http.Error(w, fmt.Sprintf("error marshalling the request to lnd: %s", err), http.StatusInternalServerError)
 
 		return
 	}
 
-	endpoint := url.URL{
-		Scheme: "https",
-		Host:   h.nodeAPI + ":8080",
-		Path:   LNDUnlockPath,
-	}
+	endpoint := url.URL{Scheme: "https", Host: h.nodeAPI + ":8080", Path: LNDUnlockPath}
 
-	res, err := http.Post(endpoint.String(), "application/json", bytes.NewBuffer(body))
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, endpoint.String(), bytes.NewBuffer(body))
 	if err != nil {
-		log.Printf("error sending the request to lnd: %s", err)
-		w.WriteHeader(http.StatusInternalServerError)
+		http.Error(w, fmt.Sprintf("error building the request to lnd: %s", err), http.StatusInternalServerError)
 
 		return
 	}
+
+	req.Header.Set("Content-Type", "application/json")
+
+	res, err := http.DefaultClient.Do(req)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("error sending the request to lnd: %s", err), http.StatusInternalServerError)
+
+		return
+	}
+	defer res.Body.Close()
 
 	if !(res.StatusCode >= 200 && res.StatusCode < 300) {
 		body, _ := io.ReadAll(res.Body)
-		log.Printf("error returned from unlocking LND: %s", body)
-		w.WriteHeader(http.StatusBadRequest)
+		http.Error(w, fmt.Sprintf("error returned from unlocking LND: %s", body), http.StatusBadRequest)
 
 		return
 	}
