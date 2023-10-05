@@ -1,6 +1,6 @@
 # Voltage AutoUnlock Webhook Service
 
-[![Deploy to DO](https://www.deploytodo.com/do-btn-white-ghost.svg)](https://cloud.digitalocean.com/apps/new?repo=https://github.com/w3irdrobot/voltageautounlock/tree/master&refcode=0b3c9298b62d)
+[![Deploy to DO](https://www.deploytodo.com/do-btn-white-ghost.svg)](https://cloud.digitalocean.com/apps/new?repo=https://github.com/w3irdrobot/voltageautounlock/tree/master&refcode=b61ec14cb278)
 [![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/w3irdrobot/voltageautounlock/tree/master)
 
 To facilitate an easy setup for [auto-unlocking on Voltage](https://docs.voltage.cloud/lightning-nodes/webhooks#example-automatic-unlock), this project allows for a quick setup of a service to run as the server receiving the webhook to then unlock the node.
@@ -24,7 +24,7 @@ Deploying to [fly.io](https://fly.io/) can be easily done using the [`flyctl`](h
 # view regions here: https://fly.io/docs/reference/regions/
 flyctl launch \
     --generate-name \
-    --image w3irdrobot/voltageautounlock:1.0.2 \
+    --image w3irdrobot/voltageautounlock:1.1.1 \
     --region ord \
     --no-deploy
 
@@ -76,7 +76,7 @@ docker run -it \
 To deploy from source, download [the latest binary](https://github.com/w3irdrobot/voltageautounlock/releases/latest) for the system this service will be run on. Set the necessary environment variables and run the binary.
 
 ```shell
-curl -Lo voltageunlock.tar.gz https://github.com/w3irdrobot/voltageautounlock/releases/download/1.0.2/voltageautounlock_1.0.2_linux_amd64.tar.gz
+curl -Lo voltageunlock.tar.gz https://github.com/w3irdrobot/voltageautounlock/releases/download/1.1.1/voltageautounlock_1.1.1_linux_amd64.tar.gz
 tar -xzf voltageunlock.tar.gz
 export VOLTAGE_NODE_API=<insert Node API URL>
 export VOLTAGE_WEBHOOK_SECRET=<insert webhook secret>
