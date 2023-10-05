@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	SecretHeader  = "VOLTAGE_SECRET"
+	SecretHeader  = "Voltage-Secret"
 	Status        = "status"
 	WaitingUnlock = "waiting_unlock"
 	LNDUnlockPath = "/v1/unlockwallet"
