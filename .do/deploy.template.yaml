@@ -1,5 +1,5 @@
 spec:
-  name: Voltage Auto-Unlock
+  name: voltage-unlock
 
   services:
   - name: service
