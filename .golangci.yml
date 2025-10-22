@@ -1,13 +1,40 @@
+version: "2"
 linters:
-  enable-all: true
+  default: all
   disable:
-  - containedctx
-  - exhaustruct
-  - exhaustivestruct
-  - tagliatelle
-
-linters-settings:
-  varnamelen:
-    ignore-decls:
-    - w http.ResponseWriter
-    - r *http.Request
+    - containedctx
+    - exhaustruct
+    - tagliatelle
+    - noinlineerr
+    - perfsprint
+  settings:
+    staticcheck:
+      checks:
+        - "-QF1001"
+    varnamelen:
+      ignore-decls:
+        - w http.ResponseWriter
+        - r *http.Request
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
+formatters:
+  enable:
+    - gci
+    - gofmt
+    - gofumpt
+    - goimports
+  exclusions:
+    generated: lax
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
